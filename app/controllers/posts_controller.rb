@@ -4,11 +4,6 @@ class PostsController < ApplicationController
   before_action :require_token, only: [:create]
   swagger_controller :posts, 'Posts'
 
-  # GET /posts
-  # GET /posts.json
-  def index
-    @posts = Post.all
-  end
 
   # GET /posts/1
   # GET /posts/1.json

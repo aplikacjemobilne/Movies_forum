@@ -1,14 +1,52 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
+  before_action :set_movie, only: [:show, :edit, :update, :destroy, :follow, :unfollow]
+  before_action :require_token, only: [:follow, :unfollow]
+  swagger_controller :movies, 'Movies'
 
+  swagger_api :follow do
+    summary 'Follows a Movie'
+    notes 'Notes...'
+    param :header, "Authorization", :string, :required, "Authentication token"
+    param :path, :id, :integer, :required, "Movie id"
+end
+  def follow
+    unless current_user.follows?(@movie)
+      current_user.movies.append(@movie)
+    end
+    redirect_to @movie
+  end
+
+  swagger_api :unfollow do
+    summary 'Unfollows a course'
+    notes 'Notes...'
+    param :header, "Authorization", :string, :required, "Authentication token"
+    param :path, :id, :integer, :required, "Movie id"
+end
+  def unfollow
+    if current_user.follows?(@movie)
+      @movie.users.delete(current_user)
+    end
+    redirect_to @movie
+  end
+  
   # GET /movies
   # GET /movies.json
+   swagger_api :index do
+    summary 'Returns all Movies'
+    notes 'Notes...'
+end
   def index
     @movies = Movie.all
   end
 
   # GET /movies/1
   # GET /movies/1.json
+  swagger_api :show do
+    summary 'Returns one course'
+    param :path, :id, :integer, :required, "Movie id"
+    notes 'Notes...'
+end
   def show
   end
 
@@ -23,6 +61,10 @@ class MoviesController < ApplicationController
 
   # POST /movies
   # POST /movies.json
+  swagger_api :create do
+    summary "Create a course"
+    param :form, "movie[name]", :string, :required, "Movie name"
+end
   def create
     @movie = Movie.new(movie_params)
 
@@ -39,6 +81,11 @@ class MoviesController < ApplicationController
 
   # PATCH/PUT /movies/1
   # PATCH/PUT /movies/1.json
+   swagger_api :update do
+    summary "Update a course"
+    param :path, :id, :integer, :required, "Course id"
+    param :form, "movie[name]", :string, :required, "Movie name"
+end
   def update
     respond_to do |format|
       if @movie.update(movie_params)
@@ -53,6 +100,11 @@ class MoviesController < ApplicationController
 
   # DELETE /movies/1
   # DELETE /movies/1.json
+  swagger_api :destroy do
+    summary 'Destroys a course'
+    param :path, :id, :integer, :required, "Movie id"
+    notes 'Notes...'
+end
   def destroy
     @movie.destroy
     respond_to do |format|
@@ -69,6 +121,6 @@ class MoviesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
-      params.require(:movie).permit(:name, :code, :desription)
+      params.require(:movie).permit(:name)
     end
 end

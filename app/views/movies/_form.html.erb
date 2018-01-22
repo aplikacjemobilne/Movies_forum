@@ -2,7 +2,7 @@
   <% if movie.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
-
+ 
       <ul>
       <% movie.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -10,22 +10,12 @@
       </ul>
     </div>
   <% end %>
-
+ 
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name, id: :movie_name %>
   </div>
-
-  <div class="field">
-    <%= form.label :code %>
-    <%= form.text_field :code, id: :movie_code %>
-  </div>
-
-  <div class="field">
-    <%= form.label :desription %>
-    <%= form.text_field :desription, id: :movie_desription %>
-  </div>
-
+ 
   <div class="actions">
     <%= form.submit %>
   </div>

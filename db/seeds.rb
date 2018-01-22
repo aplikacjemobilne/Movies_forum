@@ -14,5 +14,64 @@ require 'open-uri'
 Movie.create(
 	:name => children.css('tytul').inner_text
 )
+
+users = User.create(
+
+    [
+        {
+            index: '123456',
+            name: 'Tomek',
+            password: 'haslo123'
+        },
+        {
+            index: '654321',
+            name: 'Patryk',
+            password: 'haslo123'
+        }
+    ]
+)
+
+movies = Movie.create(
+    [
+        {
+            name:'Star Wars'
+        },
+        {
+            name:'Władca pierścieni'    
+        }
+    ])
+    
+topic = Topic.create(
+    [
+        {
+            title:' Han Solo zginie',
+            user: users.first,
+            movie: movies.first
+        },
+        {
+            title:'You shall not pass!',
+            user: users.last,
+            movie: movies.last  
+        }
+    ]
+    )
+    
+posts = Post.create(
+    [
+        {
+            body:'Jebane Spoiler!',
+            student:users.last,
+            topic:topics.first
+        },
+        {
+            body:'Gandalf',
+            student:users.first,
+            topic:topics.last    
+        }
+    ]
+    )
+    
+users.first.movies = movies
+    
 end
 

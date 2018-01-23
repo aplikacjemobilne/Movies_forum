@@ -37,11 +37,11 @@ movies = Movie.create(
             name:'Star Wars'
         },
         {
-            name:'Władca pierścieni'    
+            name:'Władca pierścieni'
         }
     ])
-    
-topic = Topic.create(
+
+topics = Topic.create(
     [
         {
             title:' Han Solo zginie',
@@ -51,27 +51,26 @@ topic = Topic.create(
         {
             title:'You shall not pass!',
             user: users.last,
-            movie: movies.last  
+            movie: movies.last
         }
     ]
     )
-    
+
 posts = Post.create(
     [
         {
             body:'Jebane Spoiler!',
-            student:users.last,
+            user:users.last,
             topic:topics.first
         },
         {
             body:'Gandalf',
-            student:users.first,
-            topic:topics.last    
+            user:users.first,
+            topic:topics.last
         }
     ]
     )
-    
-users.first.movies = movies
-    
-end
 
+users.first.movies = movies
+
+end

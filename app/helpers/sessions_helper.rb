@@ -24,7 +24,7 @@ module SessionsHelper
       format.html { }
     end
   end
-  
+
   def render_unauthorized(message)
     errors = { errors: [ { detail: message } ] }
     render json: errors, status: :unauthorized
@@ -32,8 +32,8 @@ module SessionsHelper
 
   def authenticate_token
     authenticate_with_http_token do |token, options|
-      @current_user ||= user.find_by(token: token)
+      @current_user ||= User.find_by(token: token)
     end
   end
-      
+
 end
